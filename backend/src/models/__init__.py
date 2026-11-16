@@ -5,3 +5,4 @@ from .profile import ModelProfile
 from .trace import ObservationTrace
 from .run import InferenceRun
 from .note import InterpretationNote
+from .filter import FilterSession,FilterObservation,FilterPrefixState,FilterSnapshot

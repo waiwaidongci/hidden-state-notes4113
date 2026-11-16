@@ -5,9 +5,17 @@ from src.config.database import SessionLocal
 from src.config.settings import REDIS_URL,ARTIFACT_DIR
 from src.models import InferenceRun
 from src.services.analysis import analyze
+from src.services.filter_sessions import safe_compute
 from src.services.audit import record
 app=Celery('hidden_state_notes',broker=REDIS_URL,backend=REDIS_URL)
 app.conf.update(task_track_started=True,worker_prefetch_multiplier=1,task_acks_late=True)
+
+@app.task(name='hmm.filter_session',soft_time_limit=120,time_limit=150)
+def filter_session(session_id,token=None):
+ """Incremental filtering. Every checkpoint re-checks the claim token, so a
+ late task for an older revision cannot publish over a newer one."""
+ with SessionLocal() as db:return safe_compute(db,session_id,token)
+
 @app.task(name='hmm.analyze',soft_time_limit=120,time_limit=150)
 def analyze_run(id):
  with SessionLocal() as db:

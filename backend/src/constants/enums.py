@@ -12,3 +12,7 @@ class NoteStatus(StrEnum):
  DRAFT='draft'
  APPROVED='approved'
  REJECTED='rejected'
+class FilterComputeState(StrEnum):
+ IDLE='idle'
+ QUEUED='queued'
+ RUNNING='running'

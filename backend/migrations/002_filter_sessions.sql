@@ -1,0 +1,7 @@
+-- Live filtering sessions (SQLAlchemy metadata also creates these via create_all).
+-- filter_sessions(session-wide input_revision, position_count, compute_token/state/revision, leases, computed_through, failure)
+-- filter_observations(session_id,position UNIQUE,token,revision written at append/correction)
+-- filter_prefix_states(session_id,position UNIQUE,obs_revision,computed_revision,cumulative_log_likelihood DOUBLE,posterior JSON,marginal_state,log_alpha JSON)
+-- filter_snapshots(session_id,revision UNIQUE,position_count,digest,payload JSON)  -- one whole result per observation revision
+-- A prefix state is reusable only while max(observation revision in prefix) <= computed_revision;
+-- a correction raises the revision of that position, invalidating it and every later prefix.
